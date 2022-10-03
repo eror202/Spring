@@ -33,9 +33,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public PersonDto updatePerson(PersonDto personDto) {
-        Person personToUpdate = personMapper.personDtoToPerson(getPersonById(personDto.getId()));
-        log.info("Person to update: {}", personToUpdate);
-        Person updatedPerson = personRepository.save(personMapper.updatePersonToPerson(personToUpdate, personDto));
+        personRepository.findById(personDto.getId()).orElseThrow(() -> new NotFoundException("Person not found with id "+personDto.getId()));
+        Person person = personMapper.personDtoToPerson(personDto);
+        log.info("Mapped user: {}", person);
+        Person updatedPerson = personRepository.save(person);
         log.info("Updated person: {}", updatedPerson);
         return personMapper.personToPersonDto(updatedPerson);
     }

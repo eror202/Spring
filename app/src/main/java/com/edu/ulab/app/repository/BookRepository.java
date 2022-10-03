@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
-
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Book findBookById(Long id);
     List<Book> findBookByPersonId(Long personId);
 }

@@ -150,7 +150,7 @@ public class BookServiceImplTest {
         BookDto bookDtoResult = bookService.updateBook(bookDtoUpdate);
         assertEquals(1L, bookDtoResult.getId());
         assertEquals("Yura", bookDtoResult.getAuthor());
-        assertEquals("update book", bookDtoResult.getTitle());
+        assertEquals("update title", bookDtoResult.getTitle());
     }
     // get
     @Test
@@ -244,7 +244,7 @@ public class BookServiceImplTest {
         //then
         List<Long> bookDtoResult = bookService.getBookListByPersonId(personId);
         assertEquals(bookDtoResult.size(), 2);
-        assertEquals(bookDtoResult.get(0), result);
+        assertEquals(bookDtoResult.get(0), 1);
     }
     // delete
     @Test
@@ -267,41 +267,13 @@ public class BookServiceImplTest {
     @DisplayName("Ошибка при выдачи книги. Должно пройти успешно.")
     void failedGetBook_Test() {
         //given
-        Person person  = new Person();
-        person.setId(1L);
-
-        PersonDto personDto = new PersonDto();
-        personDto.setId(1L);
         Long bookId = 1L;
-
-        BookDto result = new BookDto();
-        result.setId(1L);
-        result.setPerson(personDto);
-        result.setAuthor("test author");
-        result.setTitle("test title");
-        result.setPageCount(1000);
-
-        Book savedBook = new Book();
-        savedBook.setId(1L);
-        savedBook.setPageCount(1000);
-        savedBook.setTitle("test title");
-        savedBook.setAuthor("test author");
-        savedBook.setPerson(person);
-
         //when
-
-        when(bookRepository.findById(bookId)).thenReturn(null);
-
+        when(bookRepository.findBookById(bookId)).thenReturn(null);
 
         //then
         assertThatThrownBy(() -> bookService.getBookById(bookId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage("Book with id: 1 not found");
+                .hasMessage("Book not found with id "+bookId);
     }
-    // update
-    // get
-    // get all
-    // delete
-
-    // * failed
 }

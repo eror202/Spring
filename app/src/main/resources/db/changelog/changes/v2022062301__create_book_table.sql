@@ -1,6 +1,6 @@
 create table ulab_edu.book
 (
-    id         serial     not null,
+    id         integer     not null,
     person_id  integer     not null,
     title      varchar(50) not null,
     author     varchar(50) not null,

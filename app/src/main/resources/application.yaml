@@ -13,9 +13,10 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQL81Dialect
   datasource:
-    url: jdbc:postgresql://localhost:55512/mpl_ulab_db
+    url: jdbc:postgresql://localhost:5432/mpl_ulab_db
     username: test
     password: test
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

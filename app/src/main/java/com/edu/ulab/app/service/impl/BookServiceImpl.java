@@ -39,9 +39,9 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDto updateBook(BookDto bookDto) {
-        Book bookToUpdate = bookMapper.bookDtoToBook(getBookById(bookDto.getId()));
+        Book bookToUpdate = bookMapper.bookDtoToBook(bookDto);
         log.info("Book to update: {}", bookToUpdate);
-        Book updatedBook = bookRepository.save(bookMapper.updateBookToBook(bookToUpdate, bookDto));
+        Book updatedBook = bookRepository.save(bookToUpdate);
         log.info("Updated book: {}", updatedBook);
         return bookMapper.bookToBookDto(updatedBook);
     }

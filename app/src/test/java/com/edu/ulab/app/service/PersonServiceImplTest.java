@@ -112,10 +112,10 @@ public class PersonServiceImplTest {
 
 
         //then
-        PersonDto userDtoResult = personService.updatePerson(userUpdateDto);
-        assertEquals(1L, userDtoResult.getId());
-        assertEquals("Yura", userDtoResult.getFullName());
-        assertEquals("reader293", userDtoResult.getTitle());
+        PersonDto personDtoResult = personService.updatePerson(userUpdateDto);
+        assertEquals(1L, personDtoResult.getId());
+        assertEquals("Yura", personDtoResult.getFullName());
+        assertEquals("reader293", personDtoResult.getTitle());
     }
     // get
     @Test
@@ -196,7 +196,7 @@ public class PersonServiceImplTest {
 
         assertThatThrownBy(() -> personService.getPersonById(userId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage("User with id: 1 not found");
+                .hasMessage("Person not found with id "+savedPerson.getId());
     }
 
     @Test
@@ -239,7 +239,6 @@ public class PersonServiceImplTest {
         //then
         assertThatThrownBy(() -> personService.updatePerson(userUpdateDto))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage("User with id: 1 not found");
+                .hasMessage("Person not found with id "+savedPerson.getId());
     }
-
 }

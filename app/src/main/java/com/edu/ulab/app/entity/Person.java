@@ -27,6 +27,8 @@ public class Person {
     @Column(nullable = false)
     private int age;
 
+    /*@Column(nullable = false)
+    private int count;*/
 
     @OneToMany(mappedBy = "person", cascade = {
             CascadeType.MERGE,
