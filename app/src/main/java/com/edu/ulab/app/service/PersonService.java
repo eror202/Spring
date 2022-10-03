@@ -1,7 +1,6 @@
 package com.edu.ulab.app.service;
 
 import com.edu.ulab.app.dto.PersonDto;
-import org.springframework.stereotype.Repository;
 
 
 public interface PersonService {

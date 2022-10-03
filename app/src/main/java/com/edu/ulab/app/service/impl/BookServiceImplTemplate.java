@@ -1,7 +1,6 @@
 package com.edu.ulab.app.service.impl;
 
 import com.edu.ulab.app.dto.BookDto;
-import com.edu.ulab.app.dto.PersonDto;
 import com.edu.ulab.app.entity.Book;
 import com.edu.ulab.app.exception.NotFoundException;
 import com.edu.ulab.app.service.BookService;
@@ -33,7 +32,7 @@ public class BookServiceImplTemplate implements BookService {
     @Override
     public BookDto createBook(BookDto bookDto) {
         log.info("Save book to storage: {}", bookDto);
-        final String INSERT_SQL = "INSERT INTO BOOK(TITLE, AUTHOR, PAGE_COUNT, PERSON_ID) VALUES (?,?,?,?)";
+        final String INSERT_SQL = "INSERT INTO ULAB_EDU.BOOK(TITLE, AUTHOR, PAGE_COUNT, PERSON_ID) VALUES (?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 connection -> {
@@ -42,7 +41,7 @@ public class BookServiceImplTemplate implements BookService {
                     ps.setString(1, bookDto.getTitle());
                     ps.setString(2, bookDto.getAuthor());
                     ps.setLong(3, bookDto.getPageCount());
-                    ps.setLong(4, bookDto.getPersonId());
+                    ps.setObject(4, bookDto.getPerson().getId());
                     return ps;
                 },
                 keyHolder);
@@ -54,7 +53,7 @@ public class BookServiceImplTemplate implements BookService {
 
     @Override
     public BookDto updateBook(BookDto bookDto) {
-        final String UPDATE_SQL = "Update Book set title=?, author = ?, PAGE_COUNT = ? where id =?";
+        final String UPDATE_SQL = "Update ULAB_EDU.Book set title=?, author = ?, PAGE_COUNT = ? where id =?";
         BookDto bookToUpdate = getBookById(bookDto.getId());
         log.info("Book to update: {}", bookToUpdate);
         jdbcTemplate.update(UPDATE_SQL, bookDto.getTitle(), bookDto.getAuthor(), bookDto.getPageCount(), bookDto.getId());
@@ -64,7 +63,7 @@ public class BookServiceImplTemplate implements BookService {
 
     @Override
     public BookDto getBookById(Long id) {
-        final String SELECT_SQL = "Select * from Book where id = ?";
+        final String SELECT_SQL = "Select * from ULAB_EDU.Book where id = ?";
         BookDto bookDto = jdbcTemplate.query(SELECT_SQL, new BeanPropertyRowMapper<>(BookDto.class), new Object[]{id})
                 .stream().findAny().orElse(null);
         if (bookDto == null) {
@@ -76,16 +75,14 @@ public class BookServiceImplTemplate implements BookService {
 
     @Override
     public void deleteBookById(Long id) {
-        final String DELETE_SQL = "DELETE FROM Book where id = ?";
-        BookDto bookToDelete = getBookById(id);
-        log.info("Book to delete: {}", bookToDelete);
+        final String DELETE_SQL = "DELETE FROM ULAB_EDU.Book where id = ?";
         jdbcTemplate.update(DELETE_SQL, id);
         log.info("Delete completed: {}");
     }
 
     @Override
     public List<Long> getBookListByPersonId(Long id) {
-        final String SELECT_SQL = "select * from Book where person_id=?";
+        final String SELECT_SQL = "select * from ULAB_EDU.Book where person_id=?";
         List<Book> bookList = jdbcTemplate.query(SELECT_SQL
                 , new BeanPropertyRowMapper<>(Book.class), new Object[]{id}).stream().toList();
         List<Long> idBookList = bookList.stream().map(book -> book.getId()).collect(Collectors.toList());

@@ -22,6 +22,8 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
+    private final PersonServiceImpl personService;
+
     private final BookMapper bookMapper;
 
     @Override

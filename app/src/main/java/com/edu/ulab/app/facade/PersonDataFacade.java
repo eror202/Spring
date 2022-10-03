@@ -42,7 +42,7 @@ public class PersonDataFacade {
                 .stream()
                 .filter(Objects::nonNull)
                 .map(bookMapper::bookRequestToBookDto)
-                .peek(bookDto -> bookDto.setPersonId(createdPerson.getId()))
+                .peek(bookDto -> bookDto.setPerson(createdPerson))
                 .peek(mappedBookDto -> log.info("mapped book: {}", mappedBookDto))
                 .map(bookService::createBook)
                 .peek(createdBook -> log.info("Created book: {}", createdBook))
@@ -72,7 +72,7 @@ public class PersonDataFacade {
                 .stream()
                 .filter(Objects::nonNull)
                 .map(bookMapper::updatedBookRequestToBookDto)
-                .peek(bookDto -> bookDto.setPersonId(updatedPerson.getId()))
+                .peek(bookDto -> bookDto.setPerson(updatedPerson))
                 .peek(mappedBookDto -> log.info("mapped Book: {}", mappedBookDto))
                 .map(bookService::updateBook)
                 .peek(updateBook -> log.info("update Book: {}", updateBook))
@@ -98,14 +98,16 @@ public class PersonDataFacade {
 
     public void deletePersonWithBooks(Long userId) {
         log.info("Deleted person with books: {}");
-        personService.deletePersonById(userId);
         bookService.getBookListByPersonId(userId).forEach(bookService::deleteBookById);
+        personService.deletePersonById(userId);
         log.info("Delete is completed: {}");
     }
     public PersonBookResponse addBookToPersonList(BookToListRequest bookToListRequest){
-        BookDto bookDto = bookService.createBook(bookMapper.bookRequestToBookDto(bookToListRequest));
-        log.info("New book in person's list: {}", bookDto);
+        BookDto bookToCreate = bookMapper.bookRequestToBookDto(bookToListRequest);
         PersonDto personDto = personService.getPersonById(bookToListRequest.getPersonId());
+        bookToCreate.setPerson(personDto);
+        BookDto createdBook = bookService.createBook(bookToCreate);
+        log.info("New book in person's list: {}", createdBook);
         List<Long> bookIdList = bookService.getBookListByPersonId(bookToListRequest.getPersonId())
                 .stream()
                 .filter(Objects::nonNull)

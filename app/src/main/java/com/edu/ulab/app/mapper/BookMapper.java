@@ -6,6 +6,7 @@ import com.edu.ulab.app.web.request.BookRequest;
 import com.edu.ulab.app.web.request.update.BookToListRequest;
 import com.edu.ulab.app.web.request.update.UpdatedBookRequest;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 
@@ -24,5 +25,5 @@ public interface BookMapper {
 
     BookDto bookRequestToBookDto(BookToListRequest bookToListRequest);
 
-    Book updateBookToBook(@MappingTarget Book book,  BookDto bookDto);
+    Book updateBookToBook(@MappingTarget Book book, BookDto bookDto);
 }

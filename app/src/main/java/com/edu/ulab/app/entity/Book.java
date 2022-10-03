@@ -7,26 +7,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-@Data
-@Table(name = "Book")
+@Table(name = "book", schema = "ulab_edu")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+    @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 100)
     private Long id;
 
-    @Column(name = "personId")
-    private Long personId;
-
-    @Column(name = "title")
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "author")
+    @Column(nullable = false)
     private String author;
 
-    @Column(name = "pageCount")
+    @Column(nullable = false)
     private long pageCount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    private Person person;
 }

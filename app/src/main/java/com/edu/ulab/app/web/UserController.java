@@ -67,9 +67,10 @@ public class UserController {
 
     @DeleteMapping(value = "/delete/{userId}")
     @Operation(summary = "Delete user with books. ")
-    public void deletePersonWithBooks(@PathVariable Long userId) {
+    public ResponseEntity<HttpStatus> deletePersonWithBooks(@PathVariable Long userId) {
         log.info("Delete user and his books:  userId {}", userId);
         personDataFacade.deletePersonWithBooks(userId);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/updateBookList")
     @Operation(summary = "update user's book list. ",
