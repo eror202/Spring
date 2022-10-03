@@ -22,6 +22,11 @@ public class PersonServiceImplTemplate implements PersonService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * Method create person in database
+     * @param personDto
+     * @return savedPersonDto
+     */
     @Override
     public PersonDto createPerson(PersonDto personDto) {
         log.info("Save person to storage: {}", personDto);
@@ -42,6 +47,11 @@ public class PersonServiceImplTemplate implements PersonService {
         return personDto;
     }
 
+    /**
+     * Method update person in database
+     * @param personDto
+     * @return updatedPersonDto
+     */
     @Override
     public PersonDto updatePerson(PersonDto personDto) {
         final String UPDATE_SQL = "UPDATE ULAB_EDU.Person SET full_name=?, title = ?, age = ? where id = ?";
@@ -53,6 +63,11 @@ public class PersonServiceImplTemplate implements PersonService {
         return personDto;
     }
 
+    /**
+     * Method get person by id in database
+     * @param id
+     * @return personDto
+     */
     @Override
     public PersonDto getPersonById(Long id) {
         final String SELECT_SQL = "select * from ULAB_EDU.Person where id=?";
@@ -65,6 +80,10 @@ public class PersonServiceImplTemplate implements PersonService {
         return person;
     }
 
+    /**
+     * Method delete person by id
+     * @param id
+     */
     @Override
     public void deletePersonById(Long id) {
         final String DELETE_SQL = "DELETE FROM ULAB_EDU.Person where id = ?";

@@ -14,6 +14,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "book", schema = "ulab_edu")
 public class Book {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 100)

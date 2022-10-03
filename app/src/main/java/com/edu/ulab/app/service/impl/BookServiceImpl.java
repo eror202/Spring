@@ -22,10 +22,13 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final PersonServiceImpl personService;
-
     private final BookMapper bookMapper;
 
+    /**
+     * Method save book in database
+     * @param bookDto
+     * @return savedBookDto
+     */
     @Override
     @Transactional
     public BookDto createBook(BookDto bookDto) {
@@ -36,6 +39,11 @@ public class BookServiceImpl implements BookService {
         return bookMapper.bookToBookDto(savedBook);
     }
 
+    /**
+     * Method update book in database
+     * @param bookDto
+     * @return updatedBookDto
+     */
     @Override
     @Transactional
     public BookDto updateBook(BookDto bookDto) {
@@ -46,12 +54,21 @@ public class BookServiceImpl implements BookService {
         return bookMapper.bookToBookDto(updatedBook);
     }
 
+    /**
+     * Method get book by id in database
+     * @param id
+     * @return bookDto
+     */
     @Override
     public BookDto getBookById(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book not found with id "+id));
         return bookMapper.bookToBookDto(book);
     }
 
+    /**
+     * Method delete book by id
+     * @param id
+     */
     @Override
     @Transactional
     public void deleteBookById(Long id) {
@@ -59,6 +76,11 @@ public class BookServiceImpl implements BookService {
         log.info("Delete is completed");
     }
 
+    /**
+     * Method get all books by personId in database
+     * @param personId
+     * @return List<Long>
+     */
     @Override
     public List<Long> getBookListByPersonId(Long personId) {
         List<Book> bookList = bookRepository.findBookByPersonId(personId);

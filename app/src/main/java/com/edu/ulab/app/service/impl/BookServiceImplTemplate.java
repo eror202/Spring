@@ -29,6 +29,11 @@ public class BookServiceImplTemplate implements BookService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * Method save book in database
+     * @param bookDto
+     * @return savedBookDto
+     */
     @Override
     public BookDto createBook(BookDto bookDto) {
         log.info("Save book to storage: {}", bookDto);
@@ -50,7 +55,11 @@ public class BookServiceImplTemplate implements BookService {
         log.info("Save is complete");
         return bookDto;
     }
-
+    /**
+     * Method update book in database
+     * @param bookDto
+     * @return updatedBookDto
+     */
     @Override
     public BookDto updateBook(BookDto bookDto) {
         final String UPDATE_SQL = "Update ULAB_EDU.Book set title=?, author = ?, PAGE_COUNT = ? where id =?";
@@ -61,6 +70,11 @@ public class BookServiceImplTemplate implements BookService {
         return bookDto;
     }
 
+    /**
+     * Method get book by id in database
+     * @param id
+     * @return bookDto
+     */
     @Override
     public BookDto getBookById(Long id) {
         final String SELECT_SQL = "Select * from ULAB_EDU.Book where id = ?";
@@ -72,7 +86,10 @@ public class BookServiceImplTemplate implements BookService {
         log.info("Get book in storage with id " + id + " : {}", bookDto);
         return bookDto;
     }
-
+    /**
+     * Method delete book by id
+     * @param id
+     */
     @Override
     public void deleteBookById(Long id) {
         final String DELETE_SQL = "DELETE FROM ULAB_EDU.Book where id = ?";
@@ -80,13 +97,18 @@ public class BookServiceImplTemplate implements BookService {
         log.info("Delete completed: {}");
     }
 
+    /**
+     * Method get all books by personId in database
+     * @param personId
+     * @return List<Long>
+     */
     @Override
-    public List<Long> getBookListByPersonId(Long id) {
+    public List<Long> getBookListByPersonId(Long personId) {
         final String SELECT_SQL = "select * from ULAB_EDU.Book where person_id=?";
         List<Book> bookList = jdbcTemplate.query(SELECT_SQL
-                , new BeanPropertyRowMapper<>(Book.class), new Object[]{id}).stream().toList();
+                , new BeanPropertyRowMapper<>(Book.class), new Object[]{personId}).stream().toList();
         List<Long> idBookList = bookList.stream().map(book -> book.getId()).collect(Collectors.toList());
-        log.info("Get user's book list where userId=" + id + " : {}", bookList);
+        log.info("Get user's book list where userId=" + personId + " : {}", bookList);
         return idBookList;
     }
 }

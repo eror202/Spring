@@ -20,16 +20,26 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
 
+    /**
+     * Method create person in database
+     * @param personDto
+     * @return savedPersonDto
+     */
     @Override
     @Transactional
     public PersonDto createPerson(PersonDto personDto) {
         Person person = personMapper.personDtoToPerson(personDto);
-        log.info("Mapped user: {}", person);
-        Person savedUser = personRepository.save(person);
-        log.info("Saved user: {}", savedUser);
-        return personMapper.personToPersonDto(savedUser);
+        log.info("Mapped person: {}", person);
+        Person savedPerson = personRepository.save(person);
+        log.info("Saved person: {}", savedPerson);
+        return personMapper.personToPersonDto(savedPerson);
     }
 
+    /**
+     * Method update person in database
+     * @param personDto
+     * @return updatedPersonDto
+     */
     @Override
     @Transactional
     public PersonDto updatePerson(PersonDto personDto) {
@@ -41,6 +51,11 @@ public class PersonServiceImpl implements PersonService {
         return personMapper.personToPersonDto(updatedPerson);
     }
 
+    /**
+     * Method get person by id in database
+     * @param id
+     * @return personDto
+     */
     @Override
     public PersonDto getPersonById(Long id) {
         Person person = personRepository.findById(id).orElseThrow(() -> new NotFoundException("Person not found with id "+id));
@@ -48,6 +63,10 @@ public class PersonServiceImpl implements PersonService {
         return personMapper.personToPersonDto(person);
     }
 
+    /**
+     * Method delete person by id
+     * @param id
+     */
     @Override
     @Transactional
     public void deletePersonById(Long id) {

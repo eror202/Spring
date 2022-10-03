@@ -32,6 +32,12 @@ public class UserController {
         this.personDataFacade = personDataFacade;
     }
 
+    /**
+     * Controller for created person with books and return response
+     * @param request
+     * @param requestId
+     * @return response with created data
+     */
     @PostMapping(value = "/create")
     @Operation(summary = "Create user book row.",
             responses = {
@@ -45,6 +51,11 @@ public class UserController {
         return response;
     }
 
+    /**
+     * Controller for updated person with books and return response
+     * @param request
+     * @return response with updated data
+     */
     @PutMapping(value = "/update")
     @Operation(summary = "update user with books. ",
             responses = {
@@ -57,21 +68,37 @@ public class UserController {
         return response;
     }
 
-    @GetMapping(value = "/get/{userId}")
+    /**
+     * Controller for getting person with books
+     * @param personId
+     * @return person with his book list
+     */
+    @GetMapping(value = "/get/{personId}")
     @Operation(summary = "Get user with books.")
-    public PersonBookResponse updateUserWithBooks(@PathVariable Long userId) {
-        PersonBookResponse response = personDataFacade.getUserWithBooks(userId);
+    public PersonBookResponse getUserWithBooks(@PathVariable Long personId) {
+        PersonBookResponse response = personDataFacade.getUserWithBooks(personId);
         log.info("Response with user and his books: {}", response);
         return response;
     }
 
-    @DeleteMapping(value = "/delete/{userId}")
+    /**
+     * Controller for deleted person with his books
+     * @param personId
+     * @return HttpStatus
+     */
+    @DeleteMapping(value = "/delete/{personId}")
     @Operation(summary = "Delete user with books. ")
-    public ResponseEntity<HttpStatus> deletePersonWithBooks(@PathVariable Long userId) {
-        log.info("Delete user and his books:  userId {}", userId);
-        personDataFacade.deletePersonWithBooks(userId);
+    public ResponseEntity<HttpStatus> deletePersonWithBooks(@PathVariable Long personId) {
+        log.info("Delete user and his books:  userId {}", personId);
+        personDataFacade.deletePersonWithBooks(personId);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    /**
+     * Controller for adding book to person
+     * @param book
+     * @return response with updated data
+     */
     @PutMapping("/updateBookList")
     @Operation(summary = "update user's book list. ",
             responses = {
@@ -84,6 +111,11 @@ public class UserController {
         return response;
     }
 
+    /**
+     * Controller for deleted book
+     * @param bookId
+     * @return HttpStatus
+     */
     @DeleteMapping("/deleteBook/{bookId}")
     @Operation(summary = "delete book")
     public ResponseEntity<HttpStatus> deleteBook(@PathVariable Long bookId){

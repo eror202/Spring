@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class create messages for exceptions
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

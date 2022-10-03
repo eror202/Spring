@@ -29,7 +29,11 @@ public class PersonDataFacade {
     private final PersonMapper personMapper;
     private final BookMapper bookMapper;
 
-
+    /**
+     * Method create person with books and return response with created data
+     * @param personBookRequest
+     * @return PersonBookResponse
+     */
     public PersonBookResponse createUserWithBooks(PersonBookRequest personBookRequest) {
         log.info("Got user book create request: {}", personBookRequest);
         PersonDto personDto = personMapper.personRequestToPersonDto(personBookRequest.getPersonRequest());
@@ -56,6 +60,11 @@ public class PersonDataFacade {
                 .build();
     }
 
+    /**
+     * Method update person with books and response with updated data
+     * @param personBookRequest
+     * @return PersonBookResponse
+     */
     public PersonBookResponse updateUserWithBooks(UpdatedPersonBookRequest personBookRequest) {
         PersonDto personDto = personMapper.updatedPersonRequestToPersonDto(personBookRequest.getPersonRequest());
         PersonDto updatedPerson = personService.updatePerson(personDto);
@@ -86,6 +95,11 @@ public class PersonDataFacade {
                 .build();
     }
 
+    /**
+     * Method create response with person and his books
+     * @param userId
+     * @return PersonBookResponse
+     */
     public PersonBookResponse getUserWithBooks(Long userId) {
         PersonDto userDto = personService.getPersonById(userId);
         List<Long> bookIdList = bookService.getBookListByPersonId(userId).stream().filter(Objects::nonNull).toList();
@@ -96,12 +110,22 @@ public class PersonDataFacade {
                 .build();
     }
 
-    public void deletePersonWithBooks(Long userId) {
+    /**
+     * Method delete person with books by person id
+     * @param personId
+     */
+    public void deletePersonWithBooks(Long personId) {
         log.info("Deleted person with books: {}");
-        bookService.getBookListByPersonId(userId).forEach(bookService::deleteBookById);
-        personService.deletePersonById(userId);
+        bookService.getBookListByPersonId(personId).forEach(bookService::deleteBookById);
+        personService.deletePersonById(personId);
         log.info("Delete is completed: {}");
     }
+
+    /**
+     * Method ad book to person list by personId and create response with updated data
+     * @param bookToListRequest
+     * @return PersonBookResponse
+     */
     public PersonBookResponse addBookToPersonList(BookToListRequest bookToListRequest){
         BookDto bookToCreate = bookMapper.bookRequestToBookDto(bookToListRequest);
         PersonDto personDto = personService.getPersonById(bookToListRequest.getPersonId());
@@ -118,6 +142,11 @@ public class PersonDataFacade {
                 .booksIdList(bookIdList)
                 .build();
     }
+
+    /**
+     * Method delete book by id
+     * @param bookId
+     */
     public void deleteBook(Long bookId){
         log.info("Delete book in book's storage");
         bookService.deleteBookById(bookId);
